@@ -18,6 +18,8 @@ device_client.connect()
 print('Connected')
 
 def handle_method_request(request):
+
+
     print("Direct method received - ", request.name)
 
     if request.name == "relay_on":
@@ -27,6 +29,7 @@ def handle_method_request(request):
 
     method_response = MethodResponse.create_from_method_request(request, 200)
     device_client.send_method_response(method_response)
+
 
 device_client.on_method_request_received = handle_method_request
 
