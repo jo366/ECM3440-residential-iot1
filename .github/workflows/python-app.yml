@@ -32,7 +32,8 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Check complexity with xenon
       run: |
-         xenon -b A -m A -a A .
+        xenon help
+        xenon -b A -m A -a A .
     # - name: Test with pytest
     #   run: |
     #     pytest
