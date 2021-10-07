@@ -1,4 +1,4 @@
-# ECM3440-residential-iot1
+# ECM3440-residential-iot1 
 
 ## IoT DevOps workshop 1
 
