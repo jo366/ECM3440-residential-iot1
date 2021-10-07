@@ -17,8 +17,8 @@ print('Connecting')
 device_client.connect()
 print('Connected')
 
-def handle_method_request(request):
 
+def handle_method_request(request):
 
     print("Direct method received - ", request.name)
 
