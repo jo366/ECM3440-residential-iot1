@@ -1,18 +1,23 @@
 # content of test_sample.py
-#from app.py import handle_method_request
+# from app.py import handle_method_request
+
+
+# DO NOT DELETE THESE COMMENTED IMPORTS - 
 
 # Required to mock calls to open() and print()
-from mockito import when, unstub, verify, mock
-from io import StringIO
-import builtins
-import app
-from counterfit_connection import CounterFitConnection
+from mockito import when, mock
 
-import time
+# from mockito import unstub, verify
+# from io import StringIO
+# import builtins
+import app
+# from counterfit_connection import CounterFitConnection
+
+# import time
 from counterfit_shims_grove.adc import ADC
-from counterfit_shims_grove.grove_relay import GroveRelay
-import json
-from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
+# from counterfit_shims_grove.grove_relay import GroveRelay
+# import json
+# from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
 
 
 def test_answer():
