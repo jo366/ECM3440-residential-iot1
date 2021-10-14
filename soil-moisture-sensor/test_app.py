@@ -2,7 +2,7 @@
 # from app.py import handle_method_request
 
 
-# DO NOT DELETE THESE COMMENTED IMPORTS - 
+# DO NOT DELETE THESE COMMENTED IMPORTS
 
 # Required to mock calls to open() and print()
 from mockito import when, mock
