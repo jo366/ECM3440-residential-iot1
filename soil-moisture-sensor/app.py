@@ -34,7 +34,7 @@ def send(message, device_client):
 if __name__ == "__main__":
 
     CounterFitConnection.init('127.0.0.1', 5000)
-    connection_string = '' #validate this fits the expected format
+    connection_string = '' # validate this fits the expected format
 
     adc = ADC()
     relay = GroveRelay(5)
