@@ -11,10 +11,12 @@ from mockito import when, mock
 # from io import StringIO
 # import builtins
 import app
+
 # from counterfit_connection import CounterFitConnection
 
 # import time
 from counterfit_shims_grove.adc import ADC
+
 # from counterfit_shims_grove.grove_relay import GroveRelay
 # import json
 # from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
@@ -29,4 +31,4 @@ def test_client_init():
     when(mock_adc).read(0).thenReturn(5)
     assert mock_adc.read(0) == 5
     print(app.process(6))
-    assert str(app.process(6)) == "{\"soil_moisture\": 6}"
+    assert str(app.process(6)) == '{"soil_moisture": 6}'
