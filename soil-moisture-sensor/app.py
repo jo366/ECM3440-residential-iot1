@@ -8,7 +8,7 @@ from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
 
 def handle_method_request(request):
     print("Direct method received - ", request.name)
-    
+
     if request.name == "relay_on":
         relay.on()
     elif request.name == "relay_off":
@@ -27,7 +27,7 @@ def process(soil_moisture):
     message = Message(json.dumps({'soil_moisture': soil_moisture}))
     return message
 
-  
+
 def send(message, device_client):
     device_client.send_message(message)
 
@@ -35,7 +35,7 @@ def send(message, device_client):
 if __name__ == "__main__":
 
     CounterFitConnection.init('127.0.0.1', 5000)
-    connection_string = '' # validate this fits the expected format
+    connection_string = ''  # validate this fits the expected format
 
     adc = ADC()
     relay = GroveRelay(5)
