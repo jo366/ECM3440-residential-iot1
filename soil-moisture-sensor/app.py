@@ -5,21 +5,8 @@ from counterfit_shims_grove.grove_relay import GroveRelay
 import json
 from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
 
-CounterFitConnection.init('127.0.0.1', 5000)
-connection_string = '<connection_string>'
-
-adc = ADC()
-relay = GroveRelay(5)
-
-device_client = IoTHubDeviceClient.create_from_connection_string(connection_string)
-
-print('Connecting')
-device_client.connect()
-print('Connected')
-
 
 def handle_method_request(request):
-
     print("Direct method received - ", request.name)
 
     if request.name == "relay_on":
@@ -31,14 +18,39 @@ def handle_method_request(request):
     device_client.send_method_response(method_response)
 
 
-device_client.on_method_request_received = handle_method_request
-
-
-while True:
+def adc_read():
     soil_moisture = adc.read(0)
-    print("Soil moisture:", soil_moisture)
+    return soil_moisture
 
+
+def process(soil_moisture):
     message = Message(json.dumps({'soil_moisture': soil_moisture}))
+    return message
+
+
+def send(message, device_client):
     device_client.send_message(message)
 
-    time.sleep(10)
+
+if __name__ == "__main__":
+
+    CounterFitConnection.init('127.0.0.1', 5000)
+    connection_string = ''  # validate this fits the expected format
+
+    adc = ADC()
+    relay = GroveRelay(5)
+
+    device_client = IoTHubDeviceClient.create_from_connection_string(connection_string)
+
+    print('Connecting')
+    device_client.connect()
+    print('Connected')
+
+    device_client.on_method_request_received = handle_method_request
+    print("I got here")
+    while True:
+        soil_moisture = adc_read()
+        message = process(soil_moisture)
+        send(message, device_client)
+        print(message)
+        time.sleep(10)
