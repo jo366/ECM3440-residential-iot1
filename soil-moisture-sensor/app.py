@@ -24,7 +24,7 @@ def adc_read(channel):
 
 
 def process(soil_moisture):
-    message = Message(json.dumps({'soil_moisture': soil_moisture}))
+    message = Message(json.dumps({"soil_moisture": soil_moisture}))
     return message
 
 
@@ -34,17 +34,17 @@ def send(message, device_client):
 
 if __name__ == "__main__":
 
-    CounterFitConnection.init('127.0.0.1', 5000)
-    connection_string = ''  # validate this fits the expected format
+    CounterFitConnection.init("127.0.0.1", 5000)
+    connection_string = ""  # validate this fits the expected format
 
     adc = ADC()
     relay = GroveRelay(5)
 
     device_client = IoTHubDeviceClient.create_from_connection_string(connection_string)
 
-    print('Connecting')
+    print("Connecting")
     device_client.connect()
-    print('Connected')
+    print("Connected")
 
     device_client.on_method_request_received = handle_method_request
     print("I got here")

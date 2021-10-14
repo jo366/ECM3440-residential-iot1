@@ -11,10 +11,14 @@ from mockito import when, mock
 # from io import StringIO
 # import builtins
 # from '../soil-moisture-sensor/app' import app
+
+import app
+
 # from counterfit_connection import CounterFitConnection
 
 # import time
 from counterfit_shims_grove.adc import ADC
+
 # from counterfit_shims_grove.grove_relay import GroveRelay
 # import json
 # from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
@@ -59,3 +63,4 @@ def test_process():
 # Might be useful for adc_read:
     # assert type(n) == int, "Incorrect input"
     #     return n
+
