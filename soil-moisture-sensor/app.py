@@ -5,6 +5,7 @@ from counterfit_shims_grove.grove_relay import GroveRelay
 import json
 from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
 
+
 def handle_method_request(request):
     print("Direct method received - ", request.name)
     
@@ -23,7 +24,7 @@ def adc_read():
 
 
 def process(soil_moisture):
-    message = Message(json.dumps({ 'soil_moisture': soil_moisture }))
+    message = Message(json.dumps({'soil_moisture': soil_moisture}))
     return message
 
   
