@@ -52,10 +52,7 @@ az iot hub device-identity create --device-id soil-moisture-sensor --hub-name <h
 
 Then get the connection string with.
 
-```sh
-az iot hub device-identity connection-string show --device-id soil-moisture-sensor \
- --output table \
- --hub-name <hub_name>
+``az iot hub device-identity connection-string show --device-id soil-moisture-sensor --output table --hub-name exeter
 ```
 
 Copy the string into ```app.py```
