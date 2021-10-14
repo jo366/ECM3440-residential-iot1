@@ -23,9 +23,10 @@ from counterfit_shims_grove.adc import ADC
 def test_answer():
     assert 1 == 1
 
+
 def test_client_init():
     mock_adc = mock(ADC)
     when(mock_adc).read(0).thenReturn(5)
     assert mock_adc.read(0) == 5
-    print (app.process(6))
+    print(app.process(6))
     assert str(app.process(6)) == "{\"soil_moisture\": 6}"

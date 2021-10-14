@@ -21,10 +21,12 @@ def adc_read():
     soil_moisture = adc.read(0)
     return soil_moisture
 
+
 def process(soil_moisture):
     message = Message(json.dumps({ 'soil_moisture': soil_moisture }))
     return message
-    
+
+  
 def send(message, device_client):
     device_client.send_message(message)
 
