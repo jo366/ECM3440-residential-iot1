@@ -18,8 +18,8 @@ def handle_method_request(request):
     device_client.send_method_response(method_response)
 
 
-def adc_read():
-    soil_moisture = adc.read(0)
+def adc_read(channel):
+    soil_moisture = adc.read(channel)
     return soil_moisture
 
 
