@@ -45,6 +45,29 @@ def test_process():
     assert str(app.process(6)) == '{"soil_moisture": 6}'
 
 
+# adc_read - testing function behaves as expected with valid input
+def test_adc_read_expected_value():
+    mock_adc = mock(ADC)
+    when(mock_adc).read(0).thenReturn(5)
+
+    print(app.adc_read(0, mock_adc))
+
+    assert app.adc_read(0, mock_adc)[0] == 5
+    assert app.adc_read(0, mock_adc)[1] is True
+
+
+# adc_read - testing function breaks with character input
+def test_adc_read_character_input():
+    print(app.adc_read("a", 0))
+    assert app.adc_read("a", 0)[1] is False
+
+
+# adc_read - testing function breaks with invalid int input
+def test_adc_read_invalid_int_input():
+    print(app.adc_read(50, 0))
+    assert app.adc_read(50, 0)[1] is False
+
+
 # @TODO: write tests
 
 # UNIT TESTS

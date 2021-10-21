@@ -18,9 +18,15 @@ def handle_method_request(request):
     device_client.send_method_response(method_response)
 
 
-def adc_read(channel):
-    soil_moisture = adc.read(channel)
-    return soil_moisture
+def adc_read(channel, adc):
+    valid_channel = False
+    soil_moisture = 0
+
+    if (isinstance(channel, int)) and (0 <= channel <= 7):
+        soil_moisture = adc.read(channel)
+        valid_channel = True
+
+    return soil_moisture, valid_channel
 
 
 def process(soil_moisture):
@@ -49,7 +55,7 @@ if __name__ == "__main__":
     device_client.on_method_request_received = handle_method_request
     print("I got here")
     while True:
-        soil_moisture = adc_read()
+        soil_moisture = adc_read(0, adc)
         message = process(soil_moisture)
         send(message, device_client)
         print(message)
