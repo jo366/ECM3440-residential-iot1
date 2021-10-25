@@ -1,4 +1,5 @@
 # ECM3440-residential-iot1 
+pre-commit run --all 
 
 ## IoT DevOps workshop 1
 
@@ -74,3 +75,5 @@ az iot hub monitor-events --hub-name <hub_name>
 If it did, then the next thing to do is create your own project repository.
 
 If it didn't, fix it!
+
+
