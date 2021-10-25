@@ -49,7 +49,7 @@ if __name__ == "__main__":
     device_client.on_method_request_received = handle_method_request
     print("I got here")
     while True:
-        soil_moisture = adc_read()
+        soil_moisture = adc_read(0)
         message = process(soil_moisture)
         send(message, device_client)
         print(message)
