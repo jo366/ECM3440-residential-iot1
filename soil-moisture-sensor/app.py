@@ -6,16 +6,19 @@ import json
 from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
 
 
-def handle_method_request(request):
+def handle_method_request(request, relay, device_client):
     print("Direct method received - ", request.name)
+    relay_message = ""
 
     if request.name == "relay_on":
-        relay.on()
+        relay_message = relay.on()
     elif request.name == "relay_off":
-        relay.off()
+        relay_message = relay.off()
 
     method_response = MethodResponse.create_from_method_request(request, 200)
-    device_client.send_method_response(method_response)
+    success = device_client.send_method_response(method_response)
+
+    return success, relay_message
 
 
 def adc_read(channel, adc):
@@ -35,7 +38,7 @@ def process(soil_moisture):
 
 
 def send(message, device_client):
-    device_client.send_message(message)
+    return device_client.send_message(message)
 
 
 if __name__ == "__main__":
@@ -47,13 +50,9 @@ if __name__ == "__main__":
     relay = GroveRelay(5)
 
     device_client = IoTHubDeviceClient.create_from_connection_string(connection_string)
-
-    print("Connecting")
     device_client.connect()
-    print("Connected")
-
     device_client.on_method_request_received = handle_method_request
-    print("I got here")
+
     while True:
         soil_moisture = adc_read(0, adc)
         message = process(soil_moisture)

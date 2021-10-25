@@ -1,5 +1,6 @@
 # ECM3440-residential-iot1 
 pre-commit run --all 
+pytest --cov=soil-moisture-sensor
 
 ## IoT DevOps workshop 1
 

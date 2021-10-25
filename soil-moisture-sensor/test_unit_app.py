@@ -1,10 +1,13 @@
 # content of test_sample.py
 # from app.py import handle_method_request
 
+from counterfit_connection import CounterFitConnection
+
 
 # DO NOT DELETE THESE COMMENTED IMPORTS
 
 # Required to mock calls to open() and print()
+from azure.iot.device.iothub.models.methods import MethodRequest
 from mockito import when, mock
 
 # from mockito import unstub, verify
@@ -18,6 +21,10 @@ import app
 
 # import time
 from counterfit_shims_grove.adc import ADC
+from azure.iot.device import IoTHubDeviceClient, MethodResponse
+
+from counterfit_shims_grove.grove_relay import GroveRelay
+
 
 # from counterfit_shims_grove.grove_relay import GroveRelay
 # import json
@@ -30,16 +37,7 @@ sys.path.insert(1, "/soil-moisture-sensor/app.py")
 # from '../soil-moisture-sensor/app' import adc_read
 
 
-def test_answer():
-    assert 1 == 1
-
-
-def test_client_init():
-    mock_adc = mock(ADC)
-    when(mock_adc).read(0).thenReturn(5)
-    assert mock_adc.read(0) == 5
-
-
+# test_process - testing correct json is output with a valid integer input
 def test_process():
     print(app.process(6))
     assert str(app.process(6)) == '{"soil_moisture": 6}'
@@ -68,20 +66,56 @@ def test_adc_read_invalid_int_input():
     assert app.adc_read(50, 0)[1] is False
 
 
-# @TODO: write tests
+# send - mock the send_message method and check that we get expected returns
+def test_send_if_device_client_is_successful():
+    mock_device_client = mock(IoTHubDeviceClient)
+    when(mock_device_client).send_message("message").thenReturn(True)
 
-# UNIT TESTS
-# adc_read: make sure its only integer - Ash
-# send: Person 2 - add a return - James & Ash
-# process: DONE
-# handle_method_request: Khadija - might need to be split up?
-
-# File structure - Jacob
-
-# INTEGRATION TESTS
-# @TODO
+    print(app.send("message", mock_device_client))
+    assert (app.send("message", mock_device_client)) is True
 
 
-# Might be useful for adc_read:
-# assert type(n) == int, "Incorrect input"
-#     return n
+# send - mock the send_message method and check that we get expected returns
+def test_send_if_device_client_returns_error():
+    mock_device_client = mock(IoTHubDeviceClient)
+    when(mock_device_client).send_message("Error").thenReturn(False)
+
+    print(app.send("Error", mock_device_client))
+    assert (app.send("Error", mock_device_client)) is False
+
+
+# handle_method_request_on
+def test_handle_method_request():
+    mock_relay = mock(GroveRelay(5))
+    when(mock_relay).on().thenReturn("Relay has been switched on")
+
+    mock_request_on = mock(MethodRequest(1, "relay_on", "body"))
+    mock_request_on.request_id = 1
+    mock_request_on.name = "relay_on"
+
+    mock_reponse = mock(MethodResponse(mock_request_on, 200))
+    when(mock_reponse).create_from_method_request(mock_request_on, 200).thenReturn(
+        "Response: on, 200"
+    )
+
+    mock_device_client = mock(IoTHubDeviceClient)
+    when(mock_device_client).send_method_response(mock_reponse).thenReturn(True)
+
+    # assert (app.handle_method_request(mock_request_on, mock_relay, mock_device_client)[0]) == True
+    assert (
+        app.handle_method_request(mock_request_on, mock_relay, mock_device_client)[1]
+    ) == "Relay has been switched on"
+
+
+def test_main():
+    mock_counterFitConnection = mock(CounterFitConnection)
+    when(mock_counterFitConnection.init).thenReturn("success")
+    app.CounterFitConnection.assert_called_with("127.0.0.1", 5000)
+
+    mock_adc = mock(ADC)
+    when(mock_adc).read(0).thenReturn(5)
+
+    mock_device_client = mock(IoTHubDeviceClient)
+    when(mock_device_client).create_from_connection_string("").thenReturn
+
+    assert (app.get("soil_moisture"))[0] == 5
