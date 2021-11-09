@@ -4,6 +4,9 @@ from counterfit_shims_grove.adc import ADC
 from counterfit_shims_grove.grove_relay import GroveRelay
 import json
 from azure.iot.device import IoTHubDeviceClient, Message, MethodResponse
+from decouple import config
+
+API_KEY = config('KEY')
 
 
 def handle_method_request(request):
@@ -35,12 +38,13 @@ def send(message, device_client):
 if __name__ == "__main__":
 
     CounterFitConnection.init("127.0.0.1", 5000)
-    connection_string = ""  # validate this fits the expected format
+    connection_string = API_KEY
 
     adc = ADC()
     relay = GroveRelay(5)
 
-    device_client = IoTHubDeviceClient.create_from_connection_string(connection_string)
+    device_client = IoTHubDeviceClient.create_from_connection_string(
+        connection_string)
 
     print("Connecting")
     device_client.connect()
