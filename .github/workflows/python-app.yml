@@ -52,7 +52,7 @@ jobs:
         flake8 . --count --max-complexity=10 --max-line-length=127 --show-source
     - name: start counterfit
       run: |
-        python -m CounterFit
+        python -m CounterFit &&
     - name: 
       run: |
         python tests/test_integration_1.py
