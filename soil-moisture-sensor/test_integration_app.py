@@ -8,7 +8,7 @@ from counterfit_connection import CounterFitConnection
 myNumber = random.randrange(1, 500)
 
 
-def counterfit_set():
+def test_counterfit_create_sensor():
     # This first post will set the value of the sensor to be 0
     # or create it if it isn't running.
     r = requests.post(
@@ -25,6 +25,9 @@ def counterfit_set():
     )
     assert str(r) == "<Response [200]>"
     # This post will set the soil moisture sensor to a random value
+
+
+def test_counterfit_set_value():
     r = requests.post(
         "http://127.0.0.1:5000/integer_sensor_settings",
         json={
@@ -53,7 +56,8 @@ def test_counterfit_connection():
     )
 
 
-counterfit_set()
+test_counterfit_create_sensor()
+test_counterfit_set_value()
 test_counterfit_connection()
 
 
