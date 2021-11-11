@@ -39,5 +39,3 @@ def counterfit_set():
 
 
 counterfit_set()
-
-
