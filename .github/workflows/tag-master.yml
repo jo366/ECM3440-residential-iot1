@@ -13,6 +13,7 @@ jobs:
         fetch-depth: '0'
     - name: Bump version and push tag
       uses: anothrNick/github-tag-action@1.36.0
+      id: tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
@@ -24,4 +25,4 @@ jobs:
       with:
         artifacts: "release_files.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
-
+        tag: ${{ steps.tag.outputs.new_tag }}
