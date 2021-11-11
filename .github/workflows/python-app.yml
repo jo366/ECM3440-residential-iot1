@@ -30,6 +30,7 @@ jobs:
     - name: Run and report on unit test coverage
       run: |
         pytest -v soil-moisture-sensor/test_unit_app.py
+        coverage run -m pytest -v soil-moisture-sensor/test_unit_app.py
         coverage report -m soil-moisture-sensor/app.py
     - name: Run integration test
       run: |
