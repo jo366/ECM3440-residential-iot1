@@ -55,7 +55,7 @@ jobs:
         python -m CounterFit &
     - name: 
       run: |
-        python tests/test_integration_1.py
+        python soil-moisture-sensor/test_integration_1.py
     # - name: Test with pytest
     #   run: |
     #     pytest
