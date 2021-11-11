@@ -19,7 +19,7 @@ jobs:
         WITH_V: true
     - name: Zip release files
       run : | 
-        zip release_files.zip requirements.txt README.md soil-moisture-sensor/app.py
+        zip release_files.zip requirements.txt README.md src/app.py
     - name: Create github release
       uses: ncipollo/release-action@v1
       with:

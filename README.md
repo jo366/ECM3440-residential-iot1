@@ -27,7 +27,7 @@ pytest --no-header -v
 
 **Get Test Coverage Stats**
 ```sh
-coverage report -m soil-moisture-sensor/app.py
+coverage report -m src/app.py
 ```
 
 **Get Code Complexity Rating**
@@ -63,12 +63,12 @@ See <https://github.com/microsoft/IoT-For-Beginners/blob/main/2-farm/lessons/4-m
 In the Cloud Shell you can create an identity for your device with.
 
 ```sh
-az iot hub device-identity create --device-id soil-moisture-sensor --hub-name <hub_name>
+az iot hub device-identity create --device-id src --hub-name <hub_name>
 ```
 
 Then get the connection string with.
 
-``az iot hub device-identity connection-string show --device-id soil-moisture-sensor --output table --hub-name exeter
+``az iot hub device-identity connection-string show --device-id src --output table --hub-name exeter
 ```
 
 Copy the string into ```app.py```
