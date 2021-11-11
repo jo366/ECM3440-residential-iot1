@@ -16,21 +16,23 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest -q
+        pip install flake8 pytest coverage requests mockito -q
         if [ -f requirements.txt ]; then pip install -r requirements.txt -q; fi
     - name: Lint with flake8
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-        # flake8 --max-complexity 10 . --count --select=E9,F63,F7,F82 --show-source --statistics 
-        # We break on any error and a McCabe Complexity of 10 or more. The GitHub editor is 127 chars wide so we override the default.
-        flake8 . --count --max-complexity=10 --max-line-length=127 --show-source
+        # Stop the build if there are Python syntax errors or undefined names
+        # We break on any error and a McCabe Complexity of 10 or more. 
+        # The GitHub editor is 127 chars wide so we override the default.
+        flake8 . --count --max-complexity=10 --max-line-length=127 --show-source 
+    - name: Run and report on unit test coverage
+      run: |
+        coverage run -m pytest -v soil-moisture-sensor/test_unit_app.py
+        coverage report -m soil-moisture-sensor/app.py
     - name: Start counterfit on default port
       run: |
         python -m CounterFit &
-    - name: Run unit test
-      run: |
-        pytest -v soil-moisture-sensor/test_unit_app.py
     - name: Run integration test
       run: |
+        # Doesn't make sense to run coverage report here as it's black box.
         pytest -v soil-moisture-sensor/test_integration_app.py
     
