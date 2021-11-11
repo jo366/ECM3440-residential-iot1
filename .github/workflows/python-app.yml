@@ -4,7 +4,9 @@ name: Python application
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - testing_tags
   pull_request:
     branches: 
       - main
