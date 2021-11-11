@@ -3,7 +3,7 @@
 name: Tag Repo
 on:
   push:
-    branches: [ integration-test ]
+    branches: [ main ]
 jobs:
   tag-repo:
     runs-on: ubuntu-latest
