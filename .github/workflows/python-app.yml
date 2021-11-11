@@ -53,7 +53,8 @@ jobs:
     - name: start counterfit
       run: |
         python -m CounterFit
-    - name: |
+    - name: 
+      run: |
         python tests/test_integration_1.py
     # - name: Test with pytest
     #   run: |
