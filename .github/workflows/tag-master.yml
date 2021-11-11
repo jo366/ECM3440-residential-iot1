@@ -20,7 +20,7 @@ jobs:
       run : | 
         zip release_files.zip requirements.txt README.md soil-moisture-sensor/app.py
     - name: Create github release
-    - uses: ncipollo/release-action@v1
+      uses: ncipollo/release-action@v1
       with:
         artifacts: "release_files.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
