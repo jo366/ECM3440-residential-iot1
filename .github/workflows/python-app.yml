@@ -27,7 +27,7 @@ jobs:
     - name: Start counterfit on default port
       run: |
         python -m CounterFit &
-    - name: Run and eport on unit test coverage
+    - name: Run and report on unit test coverage
       run: |
         pytest -v soil-moisture-sensor/test_unit_app.py
         coverage report -m soil-moisture-sensor/app.py
