@@ -57,7 +57,7 @@ jobs:
     # - name: Test with pytest
     #   run: |
     #     pytest
-    - name: Create tag
+    # - name: Create tag
       # uses: actions/github-script@v3
       # with:
       #   github-token: ${{ github.token }}
