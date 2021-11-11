@@ -33,7 +33,7 @@ jobs:
         python -m CounterFit &
     # - name: Run unit test
     #   run: |
-    #     pytest soil-moisture-sensor/test_unit_app.py
+    #     pytest -v soil-moisture-sensor/test_unit_app.py
     - name: Run integration test
       run: |
-        pytest soil-moisture-sensor/test_integration_app.py
+        pytest -v soil-moisture-sensor/test_integration_app.py
