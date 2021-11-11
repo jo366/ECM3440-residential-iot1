@@ -50,5 +50,8 @@ CounterFitConnection.init("127.0.0.1", 5000)
 adc = ADC()
 
 soil_moisture = app.adc_read(0, adc)
+print("thing1 is" + str(app.process(soil_moisture)))
+
+print("thing2 is" + '{"soil_moisture":' + str(myNumber) + "}")
 
 assert str(app.process(soil_moisture)) == '{"soil_moisture":' + str(myNumber) + "}"
