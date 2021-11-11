@@ -4,6 +4,8 @@ import random
 from counterfit_shims_grove.adc import ADC
 from counterfit_connection import CounterFitConnection
 
+myNumber = random.randrange(1, 500)
+
 
 def counterfit_set():
     # TODO work out how to grab the URL for the running counterfit app, maybe we deploy and keep it static.
@@ -43,7 +45,7 @@ def counterfit_set():
 
 
 counterfit_set()
-myNumber = random.randrange(1, 500)
+
 CounterFitConnection.init("127.0.0.1", 5000)
 adc = ADC()
 
