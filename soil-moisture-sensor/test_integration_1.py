@@ -54,4 +54,7 @@ print("thing1 is" + str(app.process(soil_moisture)))
 
 print("thing2 is" + '{"soil_moisture": [' + str(myNumber) + ", true]}")
 
-assert str(app.process(soil_moisture)) == '{"soil_moisture":' + str(myNumber) + "}"
+assert (
+    str(app.process(soil_moisture))
+    == '{"soil_moisture": [' + str(myNumber) + ", true]}"
+)
