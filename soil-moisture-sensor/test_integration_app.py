@@ -23,7 +23,7 @@ def counterfit_set():
             "i2c_unit": "NoUnits",
         },
     )
-    assert r == "<Response [200]>"
+    assert str(r) == "<Response [200]>"
     # This post will set the soil moisture sensor to a random value
     r = requests.post(
         "http://127.0.0.1:5000/integer_sensor_settings",
@@ -35,7 +35,7 @@ def counterfit_set():
             "random_max": 1023,
         },
     )
-    assert r == "<Response [200]>"
+    assert str(r) == "<Response [200]>"
 
 
 def test_counterfit_connection():
