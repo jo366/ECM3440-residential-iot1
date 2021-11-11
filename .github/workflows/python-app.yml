@@ -6,7 +6,9 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: 
+      - main
+      - testing_tags
 
 jobs:
   build:
@@ -53,3 +55,14 @@ jobs:
     # - name: Test with pytest
     #   run: |
     #     pytest
+    - name: Create tag
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ github.token }}
+        script: |
+          github.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: "refs/tags/tagname",
+            sha: context.sha
+          })
