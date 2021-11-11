@@ -52,6 +52,6 @@ adc = ADC()
 soil_moisture = app.adc_read(0, adc)
 print("thing1 is" + str(app.process(soil_moisture)))
 
-print("thing2 is" + '{"soil_moisture":' + str(myNumber) + "}")
+print("thing2 is" + '{"soil_moisture": [' + str(myNumber) + ", true]}")
 
 assert str(app.process(soil_moisture)) == '{"soil_moisture":' + str(myNumber) + "}"

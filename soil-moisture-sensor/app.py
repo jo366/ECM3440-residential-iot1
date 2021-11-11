@@ -28,6 +28,7 @@ def adc_read(channel, adc):
     if (isinstance(channel, int)) and (0 <= channel <= 7):
         soil_moisture = adc.read(channel)
         valid_channel = True
+        return soil_moisture
 
     return soil_moisture, valid_channel
 
