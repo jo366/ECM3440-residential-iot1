@@ -39,22 +39,24 @@ def counterfit_set():
     )
     print(r)
 
-    # Sleep here for the number of seconds between the app checking plus 2?
-    # Now we need to check the IOT hub and we should see a whatever the random thing is coming out.
-    # TODO - How do you tail the IOT hub?
+
+def test_counterfit_connection():
+    # This is assumed to be localhost as it runs within the github actions
+    CounterFitConnection.init("127.0.0.1", 5000)
+    adc = ADC()
+
+    soil_moisture = app.adc_read(0, adc)
+
+    assert (
+        str(app.process(soil_moisture))
+        == '{"soil_moisture": [' + str(myNumber) + ", true]}"
+    )
 
 
 counterfit_set()
+test_counterfit_connection()
 
-CounterFitConnection.init("127.0.0.1", 5000)
-adc = ADC()
 
-soil_moisture = app.adc_read(0, adc)
-print("thing1 is" + str(app.process(soil_moisture)))
-
-print("thing2 is" + '{"soil_moisture": [' + str(myNumber) + ", true]}")
-
-assert (
-    str(app.process(soil_moisture))
-    == '{"soil_moisture": [' + str(myNumber) + ", true]}"
-)
+# Sleep here for the number of seconds between the app checking plus 2?
+# Now we need to check the IOT hub and we should see the number is coming out.
+# TODO - How do you tail the IOT hub?
