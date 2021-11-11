@@ -12,4 +12,4 @@ repos:
   - repo: https://github.com/Yelp/detect-secrets
     rev: v0.13.1
     hooks:
-    -   id: detect-secrets
+    - id: detect-secrets
