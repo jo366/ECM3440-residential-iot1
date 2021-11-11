@@ -51,4 +51,6 @@ adc = ADC()
 
 soil_moisture = app.adc_read(0, adc)
 
-assert str(app.process(soil_moisture)) == '{"soil_moisture":' + myNumber + "}"
+assert (
+    str(app.process(soil_moisture)) == '{"soil_moisture":' + myNumber.toString() + "}"
+)
