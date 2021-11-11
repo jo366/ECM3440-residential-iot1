@@ -4,12 +4,13 @@ import random
 from counterfit_shims_grove.adc import ADC
 from counterfit_connection import CounterFitConnection
 
+# This needs to be global as we need to capture it for use later.
 myNumber = random.randrange(1, 500)
 
 
 def counterfit_set():
-    # TODO work out how to grab the URL for the running counterfit app, maybe we deploy and keep it static.
-    # This first post will set the value of the sensor to be 0 or create it if it isn't running.
+    # This first post will set the value of the sensor to be 0
+    # or create it if it isn't running.
     r = requests.post(
         "http://127.0.0.1:5000/create_sensor",
         json={
@@ -22,11 +23,8 @@ def counterfit_set():
             "i2c_unit": "NoUnits",
         },
     )
-    print(r)
-    # Sleep here for the number of seconds between the app checking plus 2?
-    # Now we need to check the IOT hub and we should see a 0 coming out.
-    # TODO - How do you tail the IOT hub?
-
+    assert r == "<Response [200]>"
+    # This post will set the soil moisture sensor to a random value
     r = requests.post(
         "http://127.0.0.1:5000/integer_sensor_settings",
         json={
@@ -37,16 +35,18 @@ def counterfit_set():
             "random_max": 1023,
         },
     )
-    print(r)
+    assert r == "<Response [200]>"
 
 
 def test_counterfit_connection():
-    # This is assumed to be localhost as it runs within the github actions
+    # This is always localhost as it is designed to run within the github actions
     CounterFitConnection.init("127.0.0.1", 5000)
     adc = ADC()
 
     soil_moisture = app.adc_read(0, adc)
 
+    # This checks the process function as well, to check Counterfit doesn't change the format
+    # to the number it generates by adding quotes, spaces etc.
     assert (
         str(app.process(soil_moisture))
         == '{"soil_moisture": [' + str(myNumber) + ", true]}"
