@@ -1,0 +1,38 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+name: Python application
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  tag-repo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest -q
+        if [ -f requirements.txt ]; then pip install -r requirements.txt -q; fi
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        # flake8 --max-complexity 10 . --count --select=E9,F63,F7,F82 --show-source --statistics 
+        # We break on any error and a McCabe Complexity of 10 or more. The GitHub editor is 127 chars wide so we override the default.
+        flake8 . --count --max-complexity=10 --max-line-length=127 --show-source
+    - name: Start counterfit on default port
+      run: |
+        python -m CounterFit &
+    - name: Run unit test
+      run: |
+        pytest -v soil-moisture-sensor/test_unit_app.py
+    - name: Run integration test
+      run: |
+        pytest -v soil-moisture-sensor/test_integration_app.py
+    
