@@ -26,13 +26,13 @@ jobs:
         flake8 . --count --max-complexity=10 --max-line-length=127 --show-source 
     - name: Run and report on unit test coverage
       run: |
-        coverage run -m pytest -v soil-moisture-sensor/test_unit_app.py
-        coverage report -m soil-moisture-sensor/app.py
+        coverage run -m pytest -v src/test_unit_app.py
+        coverage report -m src/app.py
     - name: Start counterfit on default port
       run: |
         python -m CounterFit &
     - name: Run integration test
       run: |
         # Doesn't make sense to run coverage report here as it's black box.
-        pytest -v soil-moisture-sensor/test_integration_app.py
+        pytest -v src/test_integration_app.py
     

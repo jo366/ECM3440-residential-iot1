@@ -11,7 +11,7 @@ from azure.iot.device.iothub.models.methods import MethodRequest
 
 import sys
 
-sys.path.insert(1, "/soil-moisture-sensor/app.py")
+sys.path.insert(1, "/src/app.py")
 
 
 # test_process - testing correct json is output with a valid integer input
