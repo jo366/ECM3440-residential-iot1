@@ -1,33 +1,12 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 name: Python application
-
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
-    services:
-      counterfit:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
-        env:
-          discovery.type: single-node
-        # These options act as a ping to check the service has started, we probably don't need them.
-        # We need to select a container with python on and install counterfit onto it and push to a public registry.
-        options: >-
-          --health-cmd "curl http://localhost:9200/_cluster/health" 
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-        ports:
-        # <port on host>:<port on container>
-        # Counterfit will be 5000:5000
-        - 9200:9200
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -36,20 +15,24 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
-        docker ps
-        sleep 60
-        curl -X GET http://localhost:9200/
-    - name: Install dependencies
-      run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install flake8 pytest coverage requests mockito -q
+        if [ -f requirements.txt ]; then pip install -r requirements.txt -q; fi
     - name: Lint with flake8
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-        # flake8 --max-complexity 10 . --count --select=E9,F63,F7,F82 --show-source --statistics 
-        # We break on any error and a McCabe Complexity of 10 or more. The GitHub editor is 127 chars wide so we override the default.
-        flake8 . --count --max-complexity=10 --max-line-length=127 --show-source
-    # - name: Test with pytest
-    #   run: |
-    #     pytest
+        # Stop the build if there are Python syntax errors or undefined names
+        # We break on any error and a McCabe Complexity of 10 or more. 
+        # The GitHub editor is 127 chars wide so we override the default.
+        flake8 . --count --max-complexity=10 --max-line-length=127 --show-source 
+    - name: Run and report on unit test coverage
+      run: |
+        coverage run -m pytest -v src/test_unit_app.py
+        coverage report -m src/app.py
+    - name: Start counterfit on default port
+      run: |
+        python -m CounterFit &
+    - name: Run integration test
+      run: |
+        # Doesn't make sense to run coverage report here as it's black box.
+        pytest -v src/test_integration_app.py
+    

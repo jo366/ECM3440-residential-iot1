@@ -9,21 +9,30 @@ from decouple import config
 API_KEY = config('KEY')
 
 
-def handle_method_request(request):
+def handle_method_request(request, relay, device_client):
     print("Direct method received - ", request.name)
+    relay_message = ""
 
     if request.name == "relay_on":
-        relay.on()
+        relay_message = relay.on()
     elif request.name == "relay_off":
-        relay.off()
+        relay_message = relay.off()
 
     method_response = MethodResponse.create_from_method_request(request, 200)
-    device_client.send_method_response(method_response)
+    success = device_client.send_method_response(method_response)
+
+    return success, relay_message
 
 
-def adc_read(channel):
-    soil_moisture = adc.read(channel)
-    return soil_moisture
+def adc_read(channel, adc):
+    valid_channel = False
+    soil_moisture = 0
+
+    if (isinstance(channel, int)) and (0 <= channel <= 7):
+        soil_moisture = adc.read(channel)
+        valid_channel = True
+
+    return soil_moisture, valid_channel
 
 
 def process(soil_moisture):
@@ -32,7 +41,7 @@ def process(soil_moisture):
 
 
 def send(message, device_client):
-    device_client.send_message(message)
+    return device_client.send_message(message)
 
 
 if __name__ == "__main__":
@@ -45,15 +54,11 @@ if __name__ == "__main__":
 
     device_client = IoTHubDeviceClient.create_from_connection_string(
         connection_string)
-
-    print("Connecting")
     device_client.connect()
-    print("Connected")
-
     device_client.on_method_request_received = handle_method_request
-    print("I got here")
+
     while True:
-        soil_moisture = adc_read(0)
+        soil_moisture = adc_read(0, adc)
         message = process(soil_moisture)
         send(message, device_client)
         print(message)

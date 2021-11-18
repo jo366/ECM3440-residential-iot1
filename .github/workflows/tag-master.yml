@@ -1,0 +1,28 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+name: Tag Repo
+on:
+  push:
+    branches: [ main ]
+jobs:
+  tag-repo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.36.0
+      id: tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+    - name: Zip release files
+      run : | 
+        zip release_files.zip requirements.txt README.md src/app.py
+    - name: Create github release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "release_files.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ steps.tag.outputs.new_tag }}
