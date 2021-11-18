@@ -1,0 +1,51 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+services:
+  counterfit:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    env:
+      discovery.type: single-node
+    # These options act as a ping to check the service has started, we probably don't need them.
+    # We need to select a container with python on and install counterfit onto it and push to a public registry.
+    options: >-
+      --health-cmd "curl http://localhost:9200/_cluster/health" 
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 10
+    ports:
+    # <port on host>:<port on container>
+    # Counterfit will be 5000:5000
+    - 9200:9200
+
+steps:
+- script: actions/checkout@v2
+
+- script: actions/setup-python@v2
+  displayName: Set up Python 3.9
+
+- script: |
+    docker ps
+    sleep 60
+    curl -X GET http://localhost:9200/
+  displayName: Install dependencies
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install flake8 pytest
+    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+  displayName: Install dependencies
+
+- script: |
+    # stop the build if there are Python syntax errors or undefined names
+    # flake8 --max-complexity 10 . --count --select=E9,F63,F7,F82 --show-source --statistics 
+    # We break on any error and a McCabe Complexity of 10 or more. The GitHub editor is 127 chars wide so we override the default.
+    flake8 . --count --max-complexity=10 --max-line-length=127 --show-source
