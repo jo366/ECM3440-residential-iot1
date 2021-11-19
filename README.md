@@ -1,6 +1,6 @@
 # ECM3440-residential-iot1 Project
 ## Useful Commands
-
+test
 **Install dependencies**
 ```sh
 cd soil-moisture sensor
